@@ -10,6 +10,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view3">
@@ -22,12 +34,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <iron-ajax id="ajax"
+               method="post"
+               handle-as="json"
+               content-type="application/json"
+               on-response="_handleResponse"
+               on-error="_handleError"
+               debounce-duration="300">
+    </iron-ajax>
+
     <div class="card">
       <div class="circle">3</div>
       <h1>View Three</h1>
 
-      <paper-button on-tap="_test" raised class="pink">Test</paper-button>
-      <label id="sentence">{{label1}}</label>
+      <iron-form id="form">
+        <form>
+          <paper-input id="fn" name="name" label="First name" required error-message="Please enter name">
+            <iron-icon icon="social:person" slot="prefix"></iron-icon>
+          </paper-input>
+
+          <paper-input id="sn" name="surname" label="Surname" required error-message="Please enter surname">
+            <iron-icon icon="social:people" slot="prefix"></iron-icon>
+          </paper-input>
+
+          <paper-input id="em" name="email" label="Email" required error-message="Invalid email">
+            <iron-icon icon="communication:email" slot="prefix"></iron-icon>
+          </paper-input>
+
+          <paper-input id="mn" name="mobile" label="Mobile number" required error-message="Invalid mobile number">
+            <iron-icon icon="communication:phonelink-ring" slot="prefix"></iron-icon>
+          </paper-input>
+
+          <label id="label1">Preferred method of contact</label>
+          <paper-radio-group aria-labelledby="label1">
+           <paper-radio-button name="contact_mobile">Mobile</paper-radio-button>
+           <paper-radio-button name="contact_email">Email</paper-radio-button>
+          </paper-radio-group><br>
+
+          <paper-dropdown-menu name="gender" label="Gender">
+            <paper-listbox slot="dropdown-content">
+              <paper-item>Male</paper-item>
+              <paper-item>Female</paper-item>
+              <paper-item>Other</paper-item>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </form>
+      </iron-form>
+
+      <paper-button on-tap="_submit" raised class="pink">
+        Submit
+        <iron-icon icon="attachment"></iron-icon>
+      </paper-button>
     </div>
   </template>
 
@@ -37,22 +94,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       static get properties() {
       	return{
-      		label1:String
+
         }
       }
 
-      _test() {
-      	let sent = new Array("L","i","a","m"," ","M","a","n","s","h","o","n"," ","w","r","o","t","e"," ","t","h","i","s","!");
-      	let label1 = "";
-      	let s = 0;
-      	let t = setInterval(function() {
-      		this.label1 = label1+sent[s];
-      		s++;
-      		if (s>23) {
-      			clearInterval(t);
-          }
-        },750);
+      _submit() {
+//				if (!this.$.form.validate()) return;
+
+				let obj = this.$.form.serializeForm();
+
+				if(obj.contact_email){
+          obj.contact_type = "email";
+          delete obj.contact_email;
+        }else if(obj.contact_mobile){
+          obj.contact_type = "mobile";
+          delete obj.contact_mobile;
+        }
+
+				this.$.ajax.url = "http://plates/plates/testAPI";
+				this.$.ajax.body = obj;
+//				this.$.ajax.generateRequest();
+        console.log(obj);
+			}
+
+			_handleResponse(evt, detail){
+      	console.log(evt, detail);
       }
+
+			_handleError(evt, detail){
+				console.log(evt, detail);
+			}
 
     }
 
