@@ -1,0 +1,88 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+    </style>
+
+    <div class="card">
+      <div class="circle">42</div>
+      <h1>The Ultimate Guide to Life</h1>
+      <p>Welcome to the Meme Exhibition Website!</p>
+      <p>Here you can learn about some of the greatest memes of all time, including icons like Awkward Seal and Nyan Cat! Learn the secret of 420 and do
+        some Quik Meths as you take your place among the legends as a MEME GOD!</p>
+
+      <paper-input label="Enter your famous words here" value="{{test}}"></paper-input>
+      <label id="label1">Mood</label>
+      <paper-radio-group aria-labelledby="label1">
+        <paper-radio-button name="a">Dank</paper-radio-button>
+        <paper-radio-button on-tap="_rise" name="b">Extra dank</paper-radio-button>
+        <paper-radio-button name="c" disabled>OK</paper-radio-button>
+      </paper-radio-group>
+      <paper-checkbox on-tap="_grow" class="styled">
+        Ready
+        <span class="subtitle">
+          to embrace the power
+        </span>
+      </paper-checkbox>
+      <paper-button on-tap="_evolve" raised class="pink">ascend</paper-button>
+
+      <footer>Liam Manshon is a thug dawg and cannot be sued for his awesomeness or godly preaching</footer>
+  </template>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+			static get is() {
+				return 'my-view1';
+			}
+
+			static get properties() {
+				return {
+					test: String
+				}
+			}
+
+			_grow() {
+				alert("\""+this.test+"\" you once said. Let your spirit guide you...");
+      }
+
+      _evolve() {
+				alert("You have reached Godhood! Rejoice in your two numba 9s, a numba 9 large, a numba 6 with extra dip, a numba 7, 2 numba 45s, 1 wit cheese and a large soda!")
+      }
+
+			_rise() {
+				alert("Ma nibba!");
+			}
+		}
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>

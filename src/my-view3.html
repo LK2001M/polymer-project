@@ -1,0 +1,61 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view3">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <div class="circle">3</div>
+      <h1>View Three</h1>
+
+      <paper-button on-tap="_test" raised class="pink">Test</paper-button>
+      <label id="sentence">{{label1}}</label>
+    </div>
+  </template>
+
+  <script>
+    class MyView3 extends Polymer.Element {
+      static get is() { return 'my-view3'; }
+
+      static get properties() {
+      	return{
+      		label1:String
+        }
+      }
+
+      _test() {
+      	let sent = new Array("L","i","a","m"," ","M","a","n","s","h","o","n"," ","w","r","o","t","e"," ","t","h","i","s","!");
+      	let label1 = "";
+      	let s = 0;
+      	let t = setInterval(function() {
+      		this.label1 = label1+sent[s];
+      		s++;
+      		if (s>23) {
+      			clearInterval(t);
+          }
+        },750);
+      }
+
+    }
+
+    window.customElements.define(MyView3.is, MyView3);
+  </script>
+</dom-module>
