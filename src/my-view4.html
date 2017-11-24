@@ -18,8 +18,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view4">
@@ -33,30 +37,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <div class="card">
-      <div class="circle">42</div>
-      <h1>The Ultimate Guide to Life</h1>
-      <p>Welcome to the Meme Exhibition Website!</p>
-      <p>Here you can learn about some of the greatest memes of all time, including icons like Awkward Seal and Nyan Cat! Learn the secret of 420 and do
-        some Quik Meths as you take your place among the legends as a MEME GOD!</p>
+    <iron-ajax auto
+               url="http://plates/plates/getJSON"
+               method="get"
+               on-response="_handleResponse"
+               on-error="_handleError"
+               debounce-duration="300">
+    </iron-ajax>
 
-      <paper-input label="Enter your famous words here" value="{{test}}"></paper-input>
-      <label id="label1">Mood</label>
-      <paper-radio-group aria-labelledby="label1">
-        <paper-radio-button name="a">Dank</paper-radio-button>
-        <paper-radio-button on-tap="_rise" name="b">Extra dank</paper-radio-button>
-        <paper-radio-button name="c" disabled>OK</paper-radio-button>
-      </paper-radio-group>
-      <paper-checkbox on-tap="_grow" class="styled">
-        Ready
-        <span class="subtitle">
-          to embrace the power
-        </span>
-      </paper-checkbox>
-      <paper-button on-tap="_evolve" raised class="pink">ascend</paper-button>
+    <template is="dom-repeat" items="[[obj]]">
+       <paper-item>
+         <paper-item-body two-line>
+           <div>Show your status</div>
+           <div secondary>Your status is visble to everyone</div>
+           <iron-icon icon="warning"></iron-icon>
+         </paper-item-body>
+       </paper-item>
+        [[item.name]] does [[item.language]] and is [[item.gender]]
+    </template>
 
-      <footer>Liam Manshon is a thug dawg and cannot be sued for his awesomeness or godly preaching</footer>
-    </div>
   </template>
 
   <script>
@@ -67,20 +66,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 			static get properties() {
 				return {
-					test: String
+          obj: Object
 				}
 			}
 
-			_grow() {
-				alert("\""+this.test+"\" you once said. Let your spirit guide you...");
+			_handleResponse(evt, detail) {
+				console.log(detail.response);
+				this.obj = detail.response;
 			}
 
-			_evolve() {
-				alert("You have reached Godhood! Rejoice in your two numba 9s, a numba 9 large, a numba 6 with extra dip, a numba 7, 2 numba 45s, 1 wit cheese and a large soda!")
-			}
-
-			_rise() {
-				alert("Ma nibba!");
+			_handleError(evt, detail) {
+				console.log(evt, detail);
 			}
 		}
 
